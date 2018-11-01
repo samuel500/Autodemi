@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-3">{{ user.username }}'s Library</h1>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#all">All</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#consuming">Consuming</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#star">Star</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#to_consume">To Consume</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#consumed">Consumed</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="all" class="tab-pane active">
+        {% for content in library %}
+          {% set loop_index = loop.index %}
+          {% set context = 'all' %}
+          {% include 'content_layout.html' %}
+        {% endfor %}
+      </div>
+
+      <div id="consuming" class="tab-pane">
+        {% for content in library %}
+          {% if content[1]['consuming'] == "content-library-button-selected" %}
+            {% set loop_index = loop.index %}
+            {% set context = 'consuming' %}
+            {% include 'content_layout.html' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div id="star" class="tab-pane">
+        {% for content in library %}
+          {% if content[1]['star'] == "content-library-button-selected" %}
+            {% set loop_index = loop.index %}
+            {% set context = 'star' %}
+            {% include 'content_layout.html' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div id="to_consume" class="tab-pane">
+        {% for content in library %}
+          {% if content[1]['to_consume'] == "content-library-button-selected" %}
+            {% set loop_index = loop.index %}
+            {% set context = 'toconsume' %}
+            {% include 'content_layout.html' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div id="consumed" class="tab-pane">
+        {% for content in library %}
+          {% if content[1]['consumed'] == "content-library-button-selected" %}
+            {% set loop_index = loop.index %}
+            {% set context = 'consumed' %}
+            {% include 'content_layout.html' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+        
+
+    </div>
+
+
+{% endblock content %}

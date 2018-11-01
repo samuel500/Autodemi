@@ -1,0 +1,67 @@
+
+<article class="media content-section">
+  <div class="media-body">
+    <div class="content-metadata">
+      <img class="rounded-circle article-img content-profile-pic" src="{{ url_for('static', filename='profile_pics/' + content[0].creator.image_file) }}">
+      <div class="content-username-datetime">
+        <a class="mr-2" href="{{ url_for('users.user_profile', username=content[0].creator.username) }}">{{ content[0].creator.username }}</a>
+        <small class="text-muted content-datetime">{{ content[0].date_added.strftime('%Y-%m-%d') }}</small>
+      </div>
+      <div class="content-library-buttons-div">
+        {% set b_app = loop_index|string ~ '-' ~ context  %}
+        <button type="button" id="{{ 'consuming' ~ b_app  }}" 
+          class="btn btn-default content-library-button {{ content[1]['consuming'] }}" 
+          onClick="{{ 'contentInteraction(this.id, ' ~ content[0].content_id|string ~ ')' }}" aria-label="Consuming">
+          <i class="fa fa-retweet" aria-hidden="true"></i>
+        </button>
+
+        <button type="button" id="{{ 'star' ~ b_app }}" 
+          class="btn btn-default content-library-button {{ content[1]['star'] }}" 
+          onClick="{{ 'contentInteraction(this.id, ' ~ content[0].content_id|string ~ ')' }}""contentInteraction(this.id)" aria-label="Add To Library">
+          <i class="fa fa-star-o" aria-hidden="true"></i>
+        </button>
+        <button type="button" id="{{ 'to_consume' ~ b_app }}""to_consume" 
+          class="btn btn-default content-library-button {{ content[1]['to_consume'] }}" 
+          onClick="{{ 'contentInteraction(this.id, ' ~ content[0].content_id|string ~ ')' }}" aria-label="To Consume">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </button>
+        <button type="button" id="{{ 'consumed' ~ b_app }}" 
+          class="btn btn-default content-library-button {{ content[1]['consumed'] }}" 
+          onClick="{{ 'contentInteraction(this.id, ' ~ content[0].content_id|string ~ ')' }}" aria-label="Consumed">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </button>
+        <button type="button" id="{{ 'add_to_library' ~ b_app }}" 
+          class="btn btn-default content-library-button {{ content[1]['add_to_library'] }}" 
+          onClick="{{ 'contentInteraction(this.id, ' ~ content[0].content_id|string ~ ')' }}" aria-label="Add To Library">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        <button type="button" id="{{ 'options' ~ b_app }}" data-toggle="dropdown"
+          class="btn btn-default options-button">
+          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+        </button>
+          <ul class="dropdown-menu">
+            <li role="presentation" >
+              <a class="btn {% if current_user.is_authenticated %}{% if not (content[0].creator.id==current_user.id) %}{{'disabled'}}{% endif %}{% endif %}" href="#" onclick="{{ 'deleteContent(' ~ content[0].content_id|string ~ ');return false;' }}">delete</a>
+            </li>
+          </ul>
+      </div>
+    </div>
+    <h3><a class="content-title" href="{{ url_for('contents.content', content_id=content[0].content_id) }}">{{ content[0].title }}</a></h3>
+    <div class="content-description-div">
+      <p class="content-description">{{ content[0].description }}</p>
+    </div>
+    {% if "https://www.youtube." in content[0].link and "embed/" in content[0].link %}
+      <div class="content-video-container">
+        <iframe class="content-video" allowfullscreen="allowfullscreen"
+          src={{content[0].link}}>
+        </iframe> 
+      </div>
+    {% else %}
+      <a class="content-image-link" href="{{ content[0].link }}" target="_blank">
+      <img class="content-image" src="{{ url_for('static', filename='site_pics/' + content[0].image_file) }}"/>
+      </a>
+      <p class="content-link"><a class="link" href="{{ content[0].link }}" target="_blank">link<a></p>
+    {% endif%}
+  </div>
+</article>
+
